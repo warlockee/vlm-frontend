@@ -56,7 +56,7 @@ class VLLMInferenceEngine:
             logger.error(f"Failed to load model with vLLM: {e}")
             raise e
 
-    def predict(self, image_path: str, prompt: str, max_tokens: int = 256) -> str:
+    def predict(self, image_path: str, prompt: str, max_tokens: int = 1024) -> str:
         if not self.llm:
             raise RuntimeError("Model not loaded. Call load_model() first.")
 
