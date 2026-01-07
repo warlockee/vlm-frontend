@@ -1,123 +1,111 @@
 """
-Optimized Inference Engine for Qwen3-VL-32B
-Uses Flash Attention 2 for ~67% latency reduction (36s -> 11.75s)
+High-Performance vLLM Inference Engine for Qwen3-VL-32B
 """
-import sys
-import os
 import logging
-import torch
-from pathlib import Path
-
-# Add the project root to sys.path for qwen_vl_utils
-project_root = Path(__file__).resolve().parent.parent.parent
-if str(project_root) not in sys.path:
-    sys.path.append(str(project_root))
-
-from transformers import AutoProcessor, AutoModelForImageTextToText
-from qwen_vl_utils import process_vision_info
+import os
+from typing import List, Dict
+from PIL import Image
 
 logger = logging.getLogger(__name__)
 
-# Model paths
 MERGED_MODEL_PATH = "/home/ec2-user/efs/vlm/experiments/phase3_qwen3_deepspeed/merged_model"
-BASE_MODEL_ID = "Qwen/Qwen3-VL-32B-Instruct"
 
 
-class InferenceEngine:
-    def __init__(self, model_path=MERGED_MODEL_PATH, base_model_id=BASE_MODEL_ID):
+class VLLMInferenceEngine:
+    def __init__(
+        self,
+        model_path: str = MERGED_MODEL_PATH,
+        tensor_parallel_size: int = 8,
+        max_model_len: int = 32768,
+        gpu_memory_utilization: float = 0.90,
+        max_num_seqs: int = 32,
+    ):
         self.model_path = model_path
-        self.base_model_id = base_model_id
-        self.model = None
-        self.processor = None
+        self.tensor_parallel_size = tensor_parallel_size
+        self.max_model_len = max_model_len
+        self.gpu_memory_utilization = gpu_memory_utilization
+        self.max_num_seqs = max_num_seqs
+        self.llm = None
 
     def load_model(self):
-        """Load model with Flash Attention 2 optimization."""
-        logger.info(f"Initializing Optimized Inference Engine")
+        logger.info("Initializing vLLM Inference Engine")
         logger.info(f"Model path: {self.model_path}")
-        logger.info(f"Using Flash Attention 2 for optimized inference")
+        logger.info(f"Tensor parallel size: {self.tensor_parallel_size}")
 
         try:
-            # Load processor from base model
-            # Reduced max_pixels for faster inference (~10s vs 47s for large images)
-            logger.info("Loading processor...")
-            self.processor = AutoProcessor.from_pretrained(
-                self.base_model_id,
-                min_pixels=256 * 28 * 28,
-                max_pixels=256 * 28 * 28,  # Fixed resolution for consistent ~10s inference
-            )
+            from vllm import LLM
 
-            # Load merged model with Flash Attention 2
-            logger.info("Loading model with Flash Attention 2...")
-            self.model = AutoModelForImageTextToText.from_pretrained(
-                self.model_path,
-                torch_dtype=torch.bfloat16,
-                device_map="auto",
+            # Use ray for distributed execution instead of multiprocessing
+            self.llm = LLM(
+                model=self.model_path,
+                tensor_parallel_size=self.tensor_parallel_size,
+                gpu_memory_utilization=self.gpu_memory_utilization,
+                max_model_len=self.max_model_len,
+                max_num_seqs=self.max_num_seqs,
                 trust_remote_code=True,
-                attn_implementation="flash_attention_2",
+                dtype="bfloat16",
+                enable_prefix_caching=True,
+                limit_mm_per_prompt={"image": 1},
+                enforce_eager=True,  # Disable CUDA graphs for stability
+                distributed_executor_backend="ray",  # Use Ray instead of multiprocessing
             )
 
-            self.model.eval()
-            logger.info("Model loaded successfully with Flash Attention 2")
+            logger.info("vLLM model loaded successfully!")
 
         except Exception as e:
-            logger.error(f"Failed to load model: {e}")
+            logger.error(f"Failed to load model with vLLM: {e}")
             raise e
 
-    def predict(self, image_path: str, prompt: str) -> str:
-        """Run inference on an image with the given prompt."""
-        if not self.model or not self.processor:
-            raise RuntimeError("Model is not loaded. Call load_model() first.")
+    def predict(self, image_path: str, prompt: str, max_tokens: int = 1024) -> str:
+        if not self.llm:
+            raise RuntimeError("Model not loaded. Call load_model() first.")
 
-        logger.info(f"Running inference on {image_path}")
+        from vllm import SamplingParams
+        import base64
 
-        # Prepare messages
+        logger.info(f"Running vLLM inference on {image_path}")
+
+        # Load and encode image as base64
+        img = Image.open(image_path).convert("RGB")
+        from io import BytesIO
+        buffer = BytesIO()
+        img.save(buffer, format="JPEG", quality=85)
+        img_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
+
+        # Use OpenAI-compatible format for vLLM VLM
         messages = [
             {
                 "role": "user",
                 "content": [
-                    {"type": "image", "image": image_path},
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": f"data:image/jpeg;base64,{img_base64}"},
+                    },
                     {"type": "text", "text": prompt},
                 ],
             }
         ]
 
-        # Process inputs
-        text_input = self.processor.apply_chat_template(
-            messages, tokenize=False, add_generation_prompt=True
+        sampling_params = SamplingParams(
+            max_tokens=max_tokens,
+            temperature=0.0,
+            top_p=1.0,
         )
-        image_inputs, video_inputs = process_vision_info(messages)
 
-        inputs = self.processor(
-            text=[text_input],
-            images=image_inputs,
-            videos=video_inputs,
-            padding=True,
-            return_tensors="pt",
+        outputs = self.llm.chat(
+            messages=[messages],
+            sampling_params=sampling_params,
         )
-        inputs = inputs.to(self.model.device)
 
-        # Generate with optimized settings
-        with torch.no_grad():
-            generated_ids = self.model.generate(
-                **inputs,
-                max_new_tokens=256,
-                use_cache=True,
-                do_sample=False,  # Greedy decoding is faster
-            )
+        return outputs[0].outputs[0].text
 
-        # Decode output
-        generated_ids_trimmed = [
-            out_ids[len(in_ids) :]
-            for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
-        ]
-        output_text = self.processor.batch_decode(
-            generated_ids_trimmed,
-            skip_special_tokens=True,
-            clean_up_tokenization_spaces=False,
-        )[0]
-
-        return output_text
+    @property
+    def model(self):
+        return self.llm
 
 
-# Singleton instance
-engine = InferenceEngine()
+vllm_engine = VLLMInferenceEngine(
+    tensor_parallel_size=8,
+    gpu_memory_utilization=0.90,
+    max_num_seqs=32,
+)

@@ -6,9 +6,18 @@ cd backend
 export PYTHONPATH=$PYTHONPATH:/home/ec2-user/fsx
 # Start Backend
 pip install -r requirements.txt
+
+# Ray Cleanup and Optimization for vLLM
+echo "Cleaning up Ray cluster and old processes..."
+pkill -f "uvicorn" || true
+ray stop --force || true
+pkill -f "ray::" || true
+# Ensure we use all 8 GPUs
+export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
+
 nohup python3 -m uvicorn main:app --host 0.0.0.0 --port 8000 > ../backend.log 2>&1 &
 BACKEND_PID=$!
-echo "Backend started with PID $BACKEND_PID"
+echo "Backend started with PID $BACKEND_PID (using Ray + vLLM)"
 
 # Start Frontend
 echo "Starting Frontend..."
