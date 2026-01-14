@@ -83,7 +83,7 @@ async def inference(
         logger.info(f"File saved to {file_path}")
         
         start_time = time.time()
-        response_text = vllm_engine.predict(file_path, prompt)
+        response_text = await vllm_engine.predict(file_path, prompt)
         elapsed = time.time() - start_time
         
         logger.info(f"Inference completed in {elapsed:.2f}s")
@@ -91,7 +91,8 @@ async def inference(
         return {"response": response_text}
 
     except Exception as e:
-        logger.error(f"Inference error: {e}")
+        import traceback
+        logger.error(f"Inference error: {e}\n{traceback.format_exc()}")
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         # Cleanup uploaded file

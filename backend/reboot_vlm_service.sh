@@ -49,7 +49,8 @@ BACKEND_DIR="/home/ec2-user/fsx/vlm-frontend/backend"
 cd "$BACKEND_DIR"
 
 export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
-nohup python3 -m uvicorn main_vllm:app --host 0.0.0.0 --port 8000 > /tmp/vlm_vllm.log 2>&1 &
+export LD_LIBRARY_PATH=/usr/local/cuda/lib:/usr/local/cuda:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/targets/x86_64-linux/lib:/opt/amazon/openmpi/lib64:/opt/amazon/efa/lib64:/opt/amazon/ofi-nccl/lib64:/usr/local/lib:/usr/lib:/lib
+nohup python3 -m uvicorn main:app --host 0.0.0.0 --port 8000 > /tmp/vlm_vllm.log 2>&1 &
 NEW_PID=$!
 echo "Started vLLM process with PID: $NEW_PID"
 
