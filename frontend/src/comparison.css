@@ -601,3 +601,50 @@
     border: 1px solid #ccc;
   }
 }
+
+/* Feedback Buttons */
+.comparison-page .feedback-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+  background: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.comparison-page .feedback-btn.pass {
+  color: var(--success);
+  border-color: var(--success);
+}
+
+.comparison-page .feedback-btn.pass:hover {
+  background: rgba(46, 160, 67, 0.1);
+}
+
+.comparison-page .feedback-btn.pass.success {
+  background: var(--success);
+  color: white;
+}
+
+.comparison-page .feedback-btn.fail {
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+.comparison-page .feedback-btn.fail:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.comparison-page .feedback-btn.fail.success {
+  background: #ef4444;
+  color: white;
+}
+
+.comparison-page .feedback-btn.loading {
+  opacity: 0.7;
+  cursor: wait;
+}

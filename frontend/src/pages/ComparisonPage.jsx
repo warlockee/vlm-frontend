@@ -15,6 +15,9 @@ function ComparisonPage() {
     const [teacherLoading, setTeacherLoading] = useState(false)
 
     const [error, setError] = useState(null)
+    const [feedbackStatus, setFeedbackStatus] = useState({}) // { key: 'success' | 'error' | 'loading' }
+    const [dpoComment, setDpoComment] = useState("")
+    const [selectedWinner, setSelectedWinner] = useState(null)
 
     const handleFileChange = (e) => {
         const selected = e.target.files[0]
@@ -29,6 +32,8 @@ function ComparisonPage() {
         setStudentResult(null)
         setTeacherResult(null)
         setError(null)
+        setDpoComment("")
+        setSelectedWinner(null)
     }
 
     const handleDragOver = (e) => {
@@ -76,6 +81,71 @@ function ComparisonPage() {
             setError(prev => prev ? `${prev} | ${err.message}` : err.message)
         } finally {
             setLoadingState(false)
+        }
+    }
+
+    const updateFeedbackStatus = (key, status) => {
+        setFeedbackStatus(prev => ({ ...prev, [key]: status }))
+        setTimeout(() => {
+            setFeedbackStatus(prev => {
+                const next = { ...prev }
+                delete next[key]
+                return next
+            })
+        }, 3000)
+    }
+
+    const handleSFTFeedback = async (modelType, isPass) => {
+        const result = modelType === 'teacher' ? teacherResult : studentResult
+        if (!file || !result) return
+
+        const key = `${modelType}_${isPass ? 'pass' : 'fail'}`
+        updateFeedbackStatus(key, 'loading')
+
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('query', prompt)
+        formData.append('response', result.response)
+        formData.append('model_name', modelType === 'teacher' ? 'Teacher-32B' : 'Student-1B')
+        formData.append('is_pass', isPass)
+
+        try {
+            const res = await fetch('/api/feedback/sft', {
+                method: 'POST',
+                body: formData
+            })
+            if (!res.ok) throw new Error('Failed to save feedback')
+            updateFeedbackStatus(key, 'success')
+        } catch (err) {
+            console.error(err)
+            updateFeedbackStatus(key, 'error')
+        }
+    }
+
+    const handleDPOFeedback = async (winner) => {
+        if (!file || !teacherResult || !studentResult) return
+
+        updateFeedbackStatus('dpo', 'loading')
+
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('query', prompt)
+        formData.append('model_winner', winner === 'teacher' ? 'Teacher-32B' : 'Student-1B')
+        formData.append('model_loser', winner === 'teacher' ? 'Student-1B' : 'Teacher-32B')
+        formData.append('response_winner', winner === 'teacher' ? teacherResult.response : studentResult.response)
+        formData.append('response_loser', winner === 'teacher' ? studentResult.response : teacherResult.response)
+        if (dpoComment) formData.append('comment', dpoComment)
+
+        try {
+            const res = await fetch('/api/feedback/dpo', {
+                method: 'POST',
+                body: formData
+            })
+            if (!res.ok) throw new Error('Failed to save feedback')
+            updateFeedbackStatus('dpo', 'success')
+        } catch (err) {
+            console.error(err)
+            updateFeedbackStatus('dpo', 'error')
         }
     }
 
@@ -177,6 +247,22 @@ function ComparisonPage() {
                                 <div className="empty-state">Ready</div>
                             )}
                         </div>
+                        {teacherResult && (
+                            <div className="feedback-actions" style={{ padding: '1rem', borderTop: '1px solid var(--border-color)', display: 'flex', gap: '1rem' }}>
+                                <button
+                                    className={`feedback-btn pass ${feedbackStatus['teacher_pass']}`}
+                                    onClick={() => handleSFTFeedback('teacher', true)}
+                                >
+                                    {feedbackStatus['teacher_pass'] === 'success' ? 'Saved ✓' : 'PASS'}
+                                </button>
+                                <button
+                                    className={`feedback-btn fail ${feedbackStatus['teacher_fail']}`}
+                                    onClick={() => handleSFTFeedback('teacher', false)}
+                                >
+                                    {feedbackStatus['teacher_fail'] === 'success' ? 'Saved ✓' : 'FAIL'}
+                                </button>
+                            </div>
+                        )}
                     </div>
 
                     {/* Student Panel */}
@@ -204,8 +290,109 @@ function ComparisonPage() {
                                 <div className="empty-state">Ready</div>
                             )}
                         </div>
+                        {studentResult && (
+                            <div className="feedback-actions" style={{ padding: '1rem', borderTop: '1px solid var(--border-color)', display: 'flex', gap: '1rem' }}>
+                                <button
+                                    className={`feedback-btn pass ${feedbackStatus['student_pass']}`}
+                                    onClick={() => handleSFTFeedback('student', true)}
+                                >
+                                    {feedbackStatus['student_pass'] === 'success' ? 'Saved ✓' : 'PASS'}
+                                </button>
+                                <button
+                                    className={`feedback-btn fail ${feedbackStatus['student_fail']}`}
+                                    onClick={() => handleSFTFeedback('student', false)}
+                                >
+                                    {feedbackStatus['student_fail'] === 'success' ? 'Saved ✓' : 'FAIL'}
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
+
+                {teacherResult && studentResult && (
+                    <div className="dpo-panel" style={{
+                        marginTop: '1rem',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.75rem',
+                        padding: '1rem',
+                        background: 'var(--panel-bg)',
+                        border: '1px solid var(--border-color)',
+                        borderRadius: '12px'
+                    }}>
+                        <div style={{
+                            fontSize: '0.9rem',
+                            color: 'var(--text-secondary)',
+                            fontWeight: '700',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.05em',
+                            borderBottom: '1px solid var(--border-color)',
+                            paddingBottom: '0.5rem'
+                        }}>
+                            Preference
+                        </div>
+
+                        <div style={{ display: 'flex', gap: '1rem' }}>
+                            <button
+                                className="primary-btn"
+                                style={{
+                                    background: selectedWinner === 'teacher' ? '#eab308' : 'rgba(234, 179, 8, 0.2)',
+                                    color: selectedWinner === 'teacher' ? '#000' : '#eab308',
+                                    border: selectedWinner === 'teacher' ? '2px solid #fff' : '1px solid transparent',
+                                    padding: '0.5rem 1rem', fontSize: '0.9rem', flex: 1
+                                }}
+                                onClick={() => setSelectedWinner('teacher')}
+                                disabled={feedbackStatus['dpo'] === 'success'}
+                            >
+                                🎓 Teacher Wins
+                            </button>
+                            <button
+                                className="primary-btn"
+                                style={{
+                                    background: selectedWinner === 'student' ? '#3b82f6' : 'rgba(59, 130, 246, 0.2)',
+                                    color: selectedWinner === 'student' ? '#fff' : '#3b82f6',
+                                    border: selectedWinner === 'student' ? '2px solid #fff' : '1px solid transparent',
+                                    padding: '0.5rem 1rem', fontSize: '0.9rem', flex: 1
+                                }}
+                                onClick={() => setSelectedWinner('student')}
+                                disabled={feedbackStatus['dpo'] === 'success'}
+                            >
+                                🚀 Student Wins
+                            </button>
+                        </div>
+
+                        <textarea
+                            placeholder="Rationale (optional)..."
+                            value={dpoComment}
+                            onChange={(e) => setDpoComment(e.target.value)}
+                            style={{
+                                background: 'rgba(0,0,0,0.3)',
+                                border: '1px solid var(--border-color)',
+                                borderRadius: '6px',
+                                padding: '0.5rem',
+                                color: '#fff',
+                                fontSize: '0.85rem',
+                                minHeight: '40px',
+                                resize: 'vertical'
+                            }}
+                        />
+
+                        <button
+                            className="primary-btn"
+                            style={{ width: '100%', padding: '0.6rem' }}
+                            onClick={() => handleDPOFeedback(selectedWinner)}
+                            disabled={!selectedWinner || feedbackStatus['dpo'] === 'success'}
+                        >
+                            Submit Preference
+                        </button>
+
+                        {feedbackStatus['dpo'] === 'success' && (
+                            <div style={{ color: 'var(--success)', fontWeight: 'bold', fontSize: '0.9rem', textAlign: 'center' }}>
+                                ✓ Preference Saved
+                            </div>
+                        )}
+                    </div>
+                )}
             </main>
         </div>
     )

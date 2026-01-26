@@ -27,3 +27,20 @@
 ## Artifacts
 - `OPS_MANUAL.md`: Documentation for operators.
 - `vlm-backend.service`: Systemd unit file.
+
+## Feedback System Implementation (2026-01-26)
+
+### 1. Features
+- **Response Feedback (SFT):** "Pass/Fail" buttons for each model response.
+- **Model Comparison (DPO):** "Direct Preference" buttons (Teacher vs Student).
+
+### 2. Backend Storage
+- **Location:** `backend/datasets/`
+- **Images:** Saved to `backend/datasets/images/{uuid}.jpg`
+- **Logs:**
+    - `backend/datasets/logs/sft_dataset.jsonl`: Stores `<image_id, query, response, model, pass/fail>`
+    - `backend/datasets/logs/dpo_dataset.jsonl`: Stores `<image_id, query, winner, loser>`
+
+### 3. Verification
+- Manual curl test to `/feedback/sft` confirmed data persistence.
+- Frontend UI updated with status indicators (Saved ✓).
