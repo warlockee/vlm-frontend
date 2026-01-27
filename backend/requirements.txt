@@ -6,3 +6,6 @@ transformers>=4.40.0
 flash-attn>=2.5.0
 qwen-vl-utils
 pillow
+httpx
+python-multipart
+

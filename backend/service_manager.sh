@@ -1,41 +1,70 @@
-#!/bin/bash
-# Wrapper script for VLM Backend Service (Systemd)
+#! /bin/bash
+# Wrapper script for VLM Services (Gateway & Inference)
 
-echo "=== VLM Service Manager (Systemd) ==="
+echo "=== VLM Service Manager ==="
 
 if ! command -v systemctl &> /dev/null; then
     echo "Error: systemctl not found."
     exit 1
 fi
 
-USAGE="Usage: $0 {start|stop|restart|status|logs}"
+USAGE="Usage: $0 {start|stop|restart|status|logs} [gateway|inference|all]"
 
-if [ -z "$1" ]; then
+ACTION=$1
+TARGET=${2:-gateway} # Default to gateway if not specified
+
+if [ -z "$ACTION" ]; then
     echo "$USAGE"
     exit 1
 fi
 
-case "$1" in
-    start)
-        echo "Starting vlm-backend..."
-        sudo systemctl start vlm-backend
+handle_service() {
+    local service_name=$1
+    local action=$2
+    
+    case "$action" in
+        start)
+            echo "Starting $service_name..."
+            sudo systemctl start $service_name
+            ;;
+        stop)
+            echo "Stopping $service_name..."
+            sudo systemctl stop $service_name
+            ;;
+        restart)
+            echo "Restarting $service_name..."
+            sudo systemctl restart $service_name
+            ;;
+        status)
+            sudo systemctl status $service_name --no-pager
+            ;;
+        logs)
+            sudo journalctl -u $service_name -f
+            ;;
+        *)
+            echo "Invalid action: $action"
+            exit 1
+            ;;
+    esac
+}
+
+case "$TARGET" in
+    gateway)
+        handle_service "vlm-backend" "$ACTION" # Keeping original name for Gateway
         ;;
-    stop)
-        echo "Stopping vlm-backend..."
-        sudo systemctl stop vlm-backend
+    inference)
+        handle_service "vlm-inference" "$ACTION"
         ;;
-    restart)
-        echo "Restarting vlm-backend..."
-        sudo systemctl restart vlm-backend
-        ;;
-    status)
-        sudo systemctl status vlm-backend --no-pager
-        ;;
-    logs)
-        sudo journalctl -u vlm-backend -f
+    all)
+        if [ "$ACTION" == "logs" ]; then
+            echo "Cannot follow logs for multiple services. Choose 'gateway' or 'inference'."
+            exit 1
+        fi
+        handle_service "vlm-inference" "$ACTION"
+        handle_service "vlm-backend" "$ACTION"
         ;;
     *)
-        echo "$USAGE"
+        echo "Invalid target: $TARGET. Use 'gateway', 'inference', or 'all'."
         exit 1
         ;;
 esac

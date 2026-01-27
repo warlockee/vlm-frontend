@@ -1,5 +1,23 @@
-*.log
-/frontend/node_modules
-/frontend/dist
-/backend/__pycache__
-/frontend/package-lock.json
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Javascript
+node_modules/
+dist/
+
+# IDEs
+.vscode/
+.idea/
+
+# Backend Data
+backend/datasets/
+backend/datasets/images/
+backend/datasets/logs/
+*.jsonl
+
+# System
+.DS_Store

@@ -1,0 +1,235 @@
+
+> frontend@0.0.0 dev
+> vite --port 5173
+
+
+  VITE v7.3.0  ready in 453 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://172.31.21.77:5173/
+4:36:06 PM [vite] http proxy error: /health
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16)
+5:31:22 PM [vite] (client) hmr update /src/pages/ComparisonPage.jsx
+5:42:14 PM [vite] (client) hmr update /src/comparison.css
+8:42:12 PM [vite] (client) hmr update /src/App.jsx
+8:42:12 PM [vite] vite.config.js changed, restarting server...
+8:42:12 PM [vite] (client) hmr update /src/comparison.css
+8:42:12 PM [vite] (client) hmr update /src/pages/ComparisonPage.jsx
+8:42:12 PM [vite] (client) hmr update /src/pages/HomePage.jsx
+8:42:12 PM [vite] (client) hmr update /src/App.jsx
+8:42:12 PM [vite] (client) hmr update /src/comparison.css
+8:42:12 PM [vite] vite.config.js changed, restarting server...
+8:42:12 PM [vite] (client) hmr update /src/pages/ComparisonPage.jsx
+8:42:12 PM [vite] server restarted.
+6:26:19 PM [vite] (client) hmr update /src/pages/ComparisonPage.jsx
+6:26:20 PM [vite] Internal server error: /home/ec2-user/fsx/vlm-frontend/frontend/src/pages/ComparisonPage.jsx: Expected corresponding JSX closing tag for <main>. (306:8)
+
+  304 |                     </div>
+  305 |                 )}
+> 306 |         </div>
+      |         ^
+  307 |                 </div >
+  308 |
+  309 |         { teacherResult && studentResult && (
+  Plugin: vite:react-babel
+  File: /home/ec2-user/fsx/vlm-frontend/frontend/src/pages/ComparisonPage.jsx:306:8
+  304 |                      </div>
+  305 |                  )}
+  306 |          </div>
+      |          ^
+  307 |                  </div >
+  308 |  
+      at constructor (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:367:19)
+      at JSXParserMixin.raise (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:6624:19)
+      at JSXParserMixin.jsxParseElementAt (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:4756:16)
+      at JSXParserMixin.jsxParseElementAt (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+      at JSXParserMixin.jsxParseElement (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:4778:17)
+      at JSXParserMixin.parseExprAtom (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:4788:19)
+      at JSXParserMixin.parseExprSubscripts (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:11145:23)
+      at JSXParserMixin.parseUpdate (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:11130:21)
+      at JSXParserMixin.parseMaybeUnary (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:11110:23)
+      at JSXParserMixin.parseMaybeUnaryOrPrivate (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:10963:61)
+      at JSXParserMixin.parseExprOps (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:10968:23)
+      at JSXParserMixin.parseMaybeConditional (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:10945:23)
+      at JSXParserMixin.parseMaybeAssign (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:10895:21)
+      at /home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:10864:39
+      at JSXParserMixin.allowInAnd (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12500:12)
+      at JSXParserMixin.parseMaybeAssignAllowIn (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:10864:17)
+      at JSXParserMixin.parseMaybeAssignAllowInOrVoidPattern (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12567:17)
+      at JSXParserMixin.parseParenAndDistinguishExpression (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:11747:28)
+      at JSXParserMixin.parseExprAtom (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:11395:23)
+      at JSXParserMixin.parseExprAtom (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:4793:20)
+      at JSXParserMixin.parseExprSubscripts (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:11145:23)
+      at JSXParserMixin.parseUpdate (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:11130:21)
+      at JSXParserMixin.parseMaybeUnary (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:11110:23)
+      at JSXParserMixin.parseMaybeUnaryOrPrivate (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:10963:61)
+      at JSXParserMixin.parseExprOps (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:10968:23)
+      at JSXParserMixin.parseMaybeConditional (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:10945:23)
+      at JSXParserMixin.parseMaybeAssign (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:10895:21)
+      at JSXParserMixin.parseExpressionBase (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:10848:23)
+      at /home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:10844:39
+      at JSXParserMixin.allowInAnd (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12495:16)
+      at JSXParserMixin.parseExpression (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:10844:17)
+      at JSXParserMixin.parseReturnStatement (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13218:28)
+      at JSXParserMixin.parseStatementContent (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12874:21)
+      at JSXParserMixin.parseStatementLike (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12843:17)
+      at JSXParserMixin.parseStatementListItem (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12823:17)
+      at JSXParserMixin.parseBlockOrModuleBlockBody (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13392:61)
+      at JSXParserMixin.parseBlockBody (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13385:10)
+      at JSXParserMixin.parseBlock (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13373:10)
+      at JSXParserMixin.parseFunctionBody (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12174:24)
+      at JSXParserMixin.parseFunctionBodyAndFinish (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12160:10)
+      at /home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13521:12
+      at JSXParserMixin.withSmartMixTopicForbiddingContext (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12477:14)
+      at JSXParserMixin.parseFunction (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13520:10)
+      at JSXParserMixin.parseFunctionStatement (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13201:17)
+      at JSXParserMixin.parseStatementContent (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12867:21)
+      at JSXParserMixin.parseStatementLike (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12843:17)
+      at JSXParserMixin.parseModuleItem (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12820:17)
+      at JSXParserMixin.parseBlockOrModuleBlockBody (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13392:36)
+      at JSXParserMixin.parseBlockBody (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13385:10)
+      at JSXParserMixin.parseProgram (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12698:10)
+6:26:36 PM [vite] (client) hmr update /src/comparison.css
+6:27:39 PM [vite] (client) hmr update /src/pages/ComparisonPage.jsx
+6:54:34 PM [vite] (client) hmr update /src/pages/ComparisonPage.jsx
+6:58:31 PM [vite] (client) hmr update /src/pages/ComparisonPage.jsx
+7:01:06 PM [vite] (client) hmr update /src/pages/ComparisonPage.jsx
+7:01:06 PM [vite] Internal server error: /home/ec2-user/fsx/vlm-frontend/frontend/src/pages/ComparisonPage.jsx: Identifier 'error' has already been declared. (19:11)
+
+  17 |     const [error, setError] = useState(null)
+  18 |     const [feedbackStatus, setFeedbackStatus] = useState({}) // { key: 'success' | 'error' | 'loading' }
+> 19 |     const [error, setError] = useState(null)
+     |            ^
+  20 |     const [feedbackStatus, setFeedbackStatus] = useState({}) // { key: 'success' | 'error' | 'loading' }
+  21 |     const [dpoComment, setDpoComment] = useState("")
+  22 |     const [selectedWinner, setSelectedWinner] = useState(null)
+  Plugin: vite:react-babel
+  File: /home/ec2-user/fsx/vlm-frontend/frontend/src/pages/ComparisonPage.jsx:19:11
+  17 |      const [error, setError] = useState(null)
+  18 |      const [feedbackStatus, setFeedbackStatus] = useState({}) // { key: 'success' | 'error' | 'loading' }
+  19 |      const [error, setError] = useState(null)
+     |             ^
+  20 |      const [feedbackStatus, setFeedbackStatus] = useState({}) // { key: 'success' | 'error' | 'loading' }
+  21 |      const [dpoComment, setDpoComment] = useState("")
+      at constructor (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:367:19)
+      at JSXParserMixin.raise (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:6624:19)
+      at ScopeHandler.checkRedeclarationInScope (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:1646:19)
+      at ScopeHandler.declareName (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:1612:12)
+      at JSXParserMixin.declareNameFromIdentifier (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:7594:16)
+      at JSXParserMixin.checkIdentifier (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:7590:12)
+      at JSXParserMixin.checkLVal (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:7527:12)
+      at JSXParserMixin.checkLVal (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:7567:16)
+      at JSXParserMixin.parseVarId (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13488:10)
+      at JSXParserMixin.parseVar (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13459:12)
+      at JSXParserMixin.parseVarStatement (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13306:10)
+      at JSXParserMixin.parseStatementContent (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12927:23)
+      at JSXParserMixin.parseStatementLike (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12843:17)
+      at JSXParserMixin.parseStatementListItem (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12823:17)
+      at JSXParserMixin.parseBlockOrModuleBlockBody (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13392:61)
+      at JSXParserMixin.parseBlockBody (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13385:10)
+      at JSXParserMixin.parseBlock (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13373:10)
+      at JSXParserMixin.parseFunctionBody (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12174:24)
+      at JSXParserMixin.parseFunctionBodyAndFinish (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12160:10)
+      at /home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13521:12
+      at JSXParserMixin.withSmartMixTopicForbiddingContext (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12477:14)
+      at JSXParserMixin.parseFunction (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13520:10)
+      at JSXParserMixin.parseFunctionStatement (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13201:17)
+      at JSXParserMixin.parseStatementContent (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12867:21)
+      at JSXParserMixin.parseStatementLike (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12843:17)
+      at JSXParserMixin.parseModuleItem (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12820:17)
+      at JSXParserMixin.parseBlockOrModuleBlockBody (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13392:36)
+      at JSXParserMixin.parseBlockBody (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13385:10)
+      at JSXParserMixin.parseProgram (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12698:10)
+      at JSXParserMixin.parseTopLevel (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12688:25)
+      at JSXParserMixin.parse (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:14568:25)
+      at parse (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:14602:38)
+      at parser (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/core/lib/parser/index.js:41:34)
+      at parser.next (<anonymous>)
+      at normalizeFile (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+      at normalizeFile.next (<anonymous>)
+      at run (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/core/lib/transformation/index.js:22:50)
+      at run.next (<anonymous>)
+      at transform (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/core/lib/transform.js:22:33)
+      at transform.next (<anonymous>)
+      at step (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/gensync/index.js:261:32)
+      at /home/ec2-user/fsx/vlm-frontend/frontend/node_modules/gensync/index.js:273:13
+      at async.call.result.err.err (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/gensync/index.js:223:11)
+      at /home/ec2-user/fsx/vlm-frontend/frontend/node_modules/gensync/index.js:189:28
+      at /home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/core/lib/gensync-utils/async.js:67:7
+      at /home/ec2-user/fsx/vlm-frontend/frontend/node_modules/gensync/index.js:113:33
+      at step (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/gensync/index.js:287:14)
+      at /home/ec2-user/fsx/vlm-frontend/frontend/node_modules/gensync/index.js:273:13
+      at async.call.result.err.err (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/gensync/index.js:223:11)
+7:01:07 PM [vite] Internal server error: /home/ec2-user/fsx/vlm-frontend/frontend/src/pages/ComparisonPage.jsx: Identifier 'error' has already been declared. (19:11)
+
+  17 |     const [error, setError] = useState(null)
+  18 |     const [feedbackStatus, setFeedbackStatus] = useState({}) // { key: 'success' | 'error' | 'loading' }
+> 19 |     const [error, setError] = useState(null)
+     |            ^
+  20 |     const [feedbackStatus, setFeedbackStatus] = useState({}) // { key: 'success' | 'error' | 'loading' }
+  21 |     const [dpoComment, setDpoComment] = useState("")
+  22 |     const [selectedWinner, setSelectedWinner] = useState(null)
+  Plugin: vite:react-babel
+  File: /home/ec2-user/fsx/vlm-frontend/frontend/src/pages/ComparisonPage.jsx:19:11
+  17 |      const [error, setError] = useState(null)
+  18 |      const [feedbackStatus, setFeedbackStatus] = useState({}) // { key: 'success' | 'error' | 'loading' }
+  19 |      const [error, setError] = useState(null)
+     |             ^
+  20 |      const [feedbackStatus, setFeedbackStatus] = useState({}) // { key: 'success' | 'error' | 'loading' }
+  21 |      const [dpoComment, setDpoComment] = useState("")
+      at constructor (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:367:19)
+      at JSXParserMixin.raise (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:6624:19)
+      at ScopeHandler.checkRedeclarationInScope (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:1646:19)
+      at ScopeHandler.declareName (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:1612:12)
+      at JSXParserMixin.declareNameFromIdentifier (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:7594:16)
+      at JSXParserMixin.checkIdentifier (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:7590:12)
+      at JSXParserMixin.checkLVal (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:7527:12)
+      at JSXParserMixin.checkLVal (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:7567:16)
+      at JSXParserMixin.parseVarId (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13488:10)
+      at JSXParserMixin.parseVar (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13459:12)
+      at JSXParserMixin.parseVarStatement (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13306:10)
+      at JSXParserMixin.parseStatementContent (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12927:23)
+      at JSXParserMixin.parseStatementLike (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12843:17)
+      at JSXParserMixin.parseStatementListItem (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12823:17)
+      at JSXParserMixin.parseBlockOrModuleBlockBody (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13392:61)
+      at JSXParserMixin.parseBlockBody (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13385:10)
+      at JSXParserMixin.parseBlock (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13373:10)
+      at JSXParserMixin.parseFunctionBody (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12174:24)
+      at JSXParserMixin.parseFunctionBodyAndFinish (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12160:10)
+      at /home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13521:12
+      at JSXParserMixin.withSmartMixTopicForbiddingContext (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12477:14)
+      at JSXParserMixin.parseFunction (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13520:10)
+      at JSXParserMixin.parseFunctionStatement (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13201:17)
+      at JSXParserMixin.parseStatementContent (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12867:21)
+      at JSXParserMixin.parseStatementLike (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12843:17)
+      at JSXParserMixin.parseModuleItem (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12820:17)
+      at JSXParserMixin.parseBlockOrModuleBlockBody (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13392:36)
+      at JSXParserMixin.parseBlockBody (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:13385:10)
+      at JSXParserMixin.parseProgram (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12698:10)
+      at JSXParserMixin.parseTopLevel (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:12688:25)
+      at JSXParserMixin.parse (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:14568:25)
+      at parse (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/parser/lib/index.js:14602:38)
+      at parser (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/core/lib/parser/index.js:41:34)
+      at parser.next (<anonymous>)
+      at normalizeFile (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+      at normalizeFile.next (<anonymous>)
+      at run (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/core/lib/transformation/index.js:22:50)
+      at run.next (<anonymous>)
+      at transform (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/core/lib/transform.js:22:33)
+      at transform.next (<anonymous>)
+      at step (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/gensync/index.js:261:32)
+      at /home/ec2-user/fsx/vlm-frontend/frontend/node_modules/gensync/index.js:273:13
+      at async.call.result.err.err (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/gensync/index.js:223:11)
+      at /home/ec2-user/fsx/vlm-frontend/frontend/node_modules/gensync/index.js:189:28
+      at /home/ec2-user/fsx/vlm-frontend/frontend/node_modules/@babel/core/lib/gensync-utils/async.js:67:7
+      at /home/ec2-user/fsx/vlm-frontend/frontend/node_modules/gensync/index.js:113:33
+      at step (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/gensync/index.js:287:14)
+      at /home/ec2-user/fsx/vlm-frontend/frontend/node_modules/gensync/index.js:273:13
+      at async.call.result.err.err (/home/ec2-user/fsx/vlm-frontend/frontend/node_modules/gensync/index.js:223:11)
+7:01:15 PM [vite] (client) hmr update /src/pages/ComparisonPage.jsx
+7:06:39 PM [vite] (client) hmr update /src/comparison.css
+7:06:39 PM [vite] (client) hmr update /src/pages/ComparisonPage.jsx
+7:06:39 PM [vite] (client) hmr update /src/comparison.css
+7:06:39 PM [vite] (client) hmr update /src/pages/ComparisonPage.jsx
+7:09:05 AM [vite] (client) hmr update /src/pages/ComparisonPage.jsx

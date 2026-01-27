@@ -46,7 +46,7 @@ class VLLMInferenceEngine:
                 enable_prefix_caching=True,
                 limit_mm_per_prompt={"image": 1},
                 enforce_eager=True,
-                distributed_executor_backend="ray",
+                distributed_executor_backend="mp",
                 disable_log_stats=False,
             )
             

@@ -18,6 +18,8 @@ function ComparisonPage() {
     const [feedbackStatus, setFeedbackStatus] = useState({}) // { key: 'success' | 'error' | 'loading' }
     const [dpoComment, setDpoComment] = useState("")
     const [selectedWinner, setSelectedWinner] = useState(null)
+    const [teacherSFTSelection, setTeacherSFTSelection] = useState(null)
+    const [studentSFTSelection, setStudentSFTSelection] = useState(null)
 
     const handleFileChange = (e) => {
         const selected = e.target.files[0]
@@ -34,6 +36,8 @@ function ComparisonPage() {
         setError(null)
         setDpoComment("")
         setSelectedWinner(null)
+        setTeacherSFTSelection(null)
+        setStudentSFTSelection(null)
     }
 
     const handleDragOver = (e) => {
@@ -99,7 +103,7 @@ function ComparisonPage() {
         const result = modelType === 'teacher' ? teacherResult : studentResult
         if (!file || !result) return
 
-        const key = `${modelType}_${isPass ? 'pass' : 'fail'}`
+        const key = `${modelType}_sft`
         updateFeedbackStatus(key, 'loading')
 
         const formData = new FormData()
@@ -248,18 +252,36 @@ function ComparisonPage() {
                             )}
                         </div>
                         {teacherResult && (
-                            <div className="feedback-actions" style={{ padding: '1rem', borderTop: '1px solid var(--border-color)', display: 'flex', gap: '1rem' }}>
+                            <div className="feedback-actions" style={{ padding: '1rem', borderTop: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                <div style={{ display: 'flex', gap: '1rem' }}>
+                                    <button
+                                        className={`feedback-btn pass`}
+                                        style={{
+                                            opacity: teacherSFTSelection === true ? 1 : 0.5,
+                                            border: teacherSFTSelection === true ? '2px solid #fff' : '1px solid transparent'
+                                        }}
+                                        onClick={() => setTeacherSFTSelection(true)}
+                                    >
+                                        PASS
+                                    </button>
+                                    <button
+                                        className={`feedback-btn fail`}
+                                        style={{
+                                            opacity: teacherSFTSelection === false ? 1 : 0.5,
+                                            border: teacherSFTSelection === false ? '2px solid #fff' : '1px solid transparent'
+                                        }}
+                                        onClick={() => setTeacherSFTSelection(false)}
+                                    >
+                                        FAIL
+                                    </button>
+                                </div>
                                 <button
-                                    className={`feedback-btn pass ${feedbackStatus['teacher_pass']}`}
-                                    onClick={() => handleSFTFeedback('teacher', true)}
+                                    className="primary-btn"
+                                    style={{ width: '100%', padding: '0.5rem', marginTop: '0.5rem' }}
+                                    onClick={() => handleSFTFeedback('teacher', teacherSFTSelection)}
+                                    disabled={teacherSFTSelection === null || feedbackStatus['teacher_sft'] === 'success'}
                                 >
-                                    {feedbackStatus['teacher_pass'] === 'success' ? 'Saved ✓' : 'PASS'}
-                                </button>
-                                <button
-                                    className={`feedback-btn fail ${feedbackStatus['teacher_fail']}`}
-                                    onClick={() => handleSFTFeedback('teacher', false)}
-                                >
-                                    {feedbackStatus['teacher_fail'] === 'success' ? 'Saved ✓' : 'FAIL'}
+                                    {feedbackStatus['teacher_sft'] === 'success' ? 'Saved ✓' : 'Submit Feedback'}
                                 </button>
                             </div>
                         )}
@@ -291,18 +313,36 @@ function ComparisonPage() {
                             )}
                         </div>
                         {studentResult && (
-                            <div className="feedback-actions" style={{ padding: '1rem', borderTop: '1px solid var(--border-color)', display: 'flex', gap: '1rem' }}>
+                            <div className="feedback-actions" style={{ padding: '1rem', borderTop: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                <div style={{ display: 'flex', gap: '1rem' }}>
+                                    <button
+                                        className={`feedback-btn pass`}
+                                        style={{
+                                            opacity: studentSFTSelection === true ? 1 : 0.5,
+                                            border: studentSFTSelection === true ? '2px solid #fff' : '1px solid transparent'
+                                        }}
+                                        onClick={() => setStudentSFTSelection(true)}
+                                    >
+                                        PASS
+                                    </button>
+                                    <button
+                                        className={`feedback-btn fail`}
+                                        style={{
+                                            opacity: studentSFTSelection === false ? 1 : 0.5,
+                                            border: studentSFTSelection === false ? '2px solid #fff' : '1px solid transparent'
+                                        }}
+                                        onClick={() => setStudentSFTSelection(false)}
+                                    >
+                                        FAIL
+                                    </button>
+                                </div>
                                 <button
-                                    className={`feedback-btn pass ${feedbackStatus['student_pass']}`}
-                                    onClick={() => handleSFTFeedback('student', true)}
+                                    className="primary-btn"
+                                    style={{ width: '100%', padding: '0.5rem', marginTop: '0.5rem' }}
+                                    onClick={() => handleSFTFeedback('student', studentSFTSelection)}
+                                    disabled={studentSFTSelection === null || feedbackStatus['student_sft'] === 'success'}
                                 >
-                                    {feedbackStatus['student_pass'] === 'success' ? 'Saved ✓' : 'PASS'}
-                                </button>
-                                <button
-                                    className={`feedback-btn fail ${feedbackStatus['student_fail']}`}
-                                    onClick={() => handleSFTFeedback('student', false)}
-                                >
-                                    {feedbackStatus['student_fail'] === 'success' ? 'Saved ✓' : 'FAIL'}
+                                    {feedbackStatus['student_sft'] === 'success' ? 'Saved ✓' : 'Submit Feedback'}
                                 </button>
                             </div>
                         )}
